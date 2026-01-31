@@ -158,7 +158,7 @@ region to deploy it. Perhaps the core of our development team lives
 in or around Amsterdam, so let's select that region from the options
 menu, and name it something like `apl-ams`.
 
-> ![NOTE]
+> [!NOTE]
 > - This is intended to only run once, to generate an initial config
 file and application directory. Subsequent invocations of this
 command will overwrite an existing config.
@@ -216,7 +216,7 @@ ____
 With our config file in place, we're ready to create the projects it defines!
 Just fire off the `create` command with `--name <name>` and watch the show!
 
-> ![NOTE] \
+> [!NOTE] \
 > Replace `<name>` with the `name` value in your config file.
 
 ```bash
