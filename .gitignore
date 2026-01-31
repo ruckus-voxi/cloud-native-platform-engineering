@@ -1,0 +1,7 @@
+/vendor/
+.history/
+.vscode
+config/config.yaml
+readme-gen
+.readme.yaml
+test
