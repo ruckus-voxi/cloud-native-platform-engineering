@@ -30,4 +30,5 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
         with:
-          version: latest
+          args:  --config=${{ github.workspace }}/.golangci.yml
+          version: 2.8
