@@ -5,7 +5,8 @@
   "separate-pull-requests": true,
   "packages": {
     ".": {
-      "release-type": "go"
+      "release-type": "go",
+      "package-name": "aplcli"
     }
   }
 }
