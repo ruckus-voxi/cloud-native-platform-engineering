@@ -1,0 +1,40 @@
+name: lint
+on:
+  push:
+    branches:
+      - "release/**"
+    paths:
+      - "**.go"
+      - "go.mod"
+      - "go.sum"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "**.go"
+      - "go.mod"
+      - "go.sum"
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: "Tag for manual workflow run"
+        required: true
+        type: string
+permissions:
+  contents: read
+  pull-requests: read
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout the Repository
+      - uses: actions/setup-go@v5
+        name: Setup Go
+        with:
+          go-version: "stable"
+          cache: true
+      - uses: golangci/golangci-lint-action@v6
+        name: golangci-lint
+        with:
+          version: latest
