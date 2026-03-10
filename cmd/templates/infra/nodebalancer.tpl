@@ -1,6 +1,7 @@
 package app
 
 import (
+	"slices"
 	"time"
 
 	utils "{{ .repo }}/utils"
@@ -48,11 +49,15 @@ func GetNodeBalancer(ctx *pulumi.Context, region, tag string, opt ...any) NodeBa
 	for range 5 {
 		result := searchNodeBalancer(ctx, nbinfo)
 		if len(result.Nodebalancers) > 0 {
-			nb.Id = result.Nodebalancers[0].Id
-			nb.Ipv4 = result.Nodebalancers[0].Ipv4
-			nb.Ipv6 = result.Nodebalancers[0].Ipv6
-
-			break
+			for idx, i := range result.Nodebalancers {
+				if slices.Contains(i.Tags, nbTag) {
+					nb.Id = result.Nodebalancers[idx].Id
+					nb.Ipv4 = result.Nodebalancers[idx].Ipv4
+					nb.Ipv6 = result.Nodebalancers[idx].Ipv6
+					break
+				}
+				time.Sleep(5 * time.Second)
+			}
 		}
 
 		time.Sleep(5 * time.Second)
