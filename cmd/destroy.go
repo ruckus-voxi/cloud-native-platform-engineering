@@ -107,7 +107,7 @@ func init() {
 	destroyCmd.Flags().BoolVarP(&purgeObj, "purge-obj", "", false, "Purge objects in APL buckets")
 	destroyCmd.Flags().BoolVarP(&purgeStk, "purge-stack", "", false, "Purge Pulumi stack data")
 
-	viper.BindPFlags(destroyCmd.LocalFlags()) //nolint:errcheck
+	_ = viper.BindPFlags(destroyCmd.LocalFlags())
 }
 
 func stackAction(ctx context.Context, st *MicroStack) {

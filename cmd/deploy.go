@@ -62,5 +62,5 @@ func init() {
 	// optional flags
 	deployCmd.Flags().StringVarP(&deployTarget, "target", "t", "", "Target a specific project")
 
-	viper.BindPFlags(deployCmd.LocalFlags()) //nolint:errcheck
+	_ = viper.BindPFlags(deployCmd.LocalFlags())
 }

@@ -118,5 +118,5 @@ func init() {
 	createCmd.Flags().StringVarP(&platform.Repo, "repo", "", defaultRepo, "Repo URL")
 	createCmd.Flags().StringVarP(&platform.Values, "values", "", valuesFile, "Helm chart values.yaml template")
 
-	viper.BindPFlags(createCmd.LocalFlags()) //nolint:errcheck
+	_ = viper.BindPFlags(createCmd.LocalFlags())
 }
