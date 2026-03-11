@@ -31,6 +31,7 @@ type PurgeRequest struct {
 	RmDirs bool   `json:"rmdirs,omitempty"` // add --rmDirs flag to rclone delete command
 }
 
+//nolint:gosec
 type s3Remote struct {
 	AccessKeyId     string            `json:"accessKey,omitempty"`
 	Acl             string            `json:"acl,omitempty"`

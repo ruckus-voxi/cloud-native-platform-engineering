@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/auto"
 	"github.com/pulumi/pulumi/sdk/v3/go/auto/optdestroy"
@@ -182,7 +183,11 @@ func stackExists(ctx context.Context, fqsn string) bool {
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Authorization", auth)
 
-	res, err := http.DefaultClient.Do(req)
+	httpAPIClient := &http.Client{
+		Timeout: time.Second * 30,
+	}
+
+	res, err := httpAPIClient.Do(req)
 	if err != nil {
 		logger.Error("client http request: " + err.Error())
 	}
