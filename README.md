@@ -45,7 +45,7 @@ Software dependencies:
 
 Account prerequisites:
 
-- **Linode account:** Provider for cloud infrastructure resources ([login or create account](https://login.linode.com/signup))
+- **Akamai Cloud account:** Provider for cloud infrastructure resources. Create an [account here](http://login.linode.com/signup?promo=akm-dev-git-300-31126-M055) (we have a $300 credit just for you) 
 - **Bring Your Own Domain (BYOD):** Custom domain pointed to [Linode's name servers](https://techdocs.akamai.com/cloud-computing/docs/getting-started-with-dns-manager#use-linodes-name-servers)
 - **Pulumi Cloud account:** Backend for IaC resource state, configuration and secrets management ([login or create account](https://app.pulumi.com/signup))
 
