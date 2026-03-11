@@ -81,7 +81,7 @@ func GetPulumiUser() string {
 		logger.Error("skip update check: " + err.Error())
 	}
 
-	cmd := exec.CommandContext(ctx, "pulumi", "whoami")
+	cmd := exec.CommandContext(ctx, "pulumi", "whoami", "--non-interactive")
 
 	stdout, err := cmd.CombinedOutput()
 	if err != nil {
