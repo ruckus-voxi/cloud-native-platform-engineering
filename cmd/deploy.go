@@ -31,6 +31,7 @@ var deployCmd = &cobra.Command{
 		}
 
 		var idx int
+
 		for k, i := range stacks {
 			i.Path = filepath.Join(paths.Projects, platform.Name, "cmd", i.Name)
 			i.GetFullName(ctx)

@@ -62,6 +62,7 @@ var initCmd = &cobra.Command{
 	Short: "Initialize a new aplcli environment",
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		path := projPath()
+
 		err := os.MkdirAll(path.Projects, 0754)
 		if err != nil {
 			logger.Error("project directory creation: " + err.Error())
@@ -112,6 +113,7 @@ var initCmd = &cobra.Command{
 		fsDir := "templates/values"
 		exTpl := "values-example.tpl"
 		fname := filepath.Join(paths.Values, exTpl)
+
 		v, err := templates.ReadFile(fsDir + "/" + exTpl)
 		if err != nil {
 			msg := fmt.Sprintf("read %s: %s", exTpl, err.Error())

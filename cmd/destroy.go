@@ -28,12 +28,14 @@ var destroyCmd = &cobra.Command{
 
 		addPrePostRun := func(action, s string, b bool, i int) {
 			funcs := make([]string, 0)
+
 			switch action {
 			case "pre":
 				funcs = destroyStacks[i].PreRun
 			case "post":
 				funcs = destroyStacks[i].PostRun
 			}
+
 			if b {
 				funcs = append(funcs, s)
 				if action == "pre" {
@@ -53,11 +55,13 @@ var destroyCmd = &cobra.Command{
 		if destroyTarget != "apl" {
 			if !purgeObj {
 				prompt := "WARNING: purge data in app platform obj buckets? (type YES to confirm)"
+
 				purgeObj = InputPrompt("warn", "YES", prompt)
 				if !purgeObj {
 					logger.Warn("line:ignoring obj buckets")
 				}
 			}
+
 			addPrePostRun("pre", "deleteObj", purgeObj, 2)
 		}
 	},
@@ -65,6 +69,7 @@ var destroyCmd = &cobra.Command{
 		ctx := context.Background()
 
 		var idx int
+
 		for k, i := range destroyStacks {
 			i.Path = filepath.Join(paths.Projects, platform.Name, "cmd", i.Name)
 			i.GetFullName(ctx)

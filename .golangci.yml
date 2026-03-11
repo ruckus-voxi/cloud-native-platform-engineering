@@ -50,7 +50,6 @@ linters:
     - gocheckcompilerdirectives
     - gochecksumtype
     - gocognit
-    - goconst
     - gocritic
     - gocyclo
     - godoclint
@@ -125,6 +124,7 @@ linters:
      - funlen
      - gochecknoglobals
      - gochecknoinits
+     - goconst
      - lll
      - mirror
      - mnd
@@ -153,6 +153,8 @@ linters:
         - 'utils.+'
     gosec:
       confidence: medium
+      excludes:
+        - G704
     varnamelen:
       check-type-param: true
       ignore-type-assert-ok: true

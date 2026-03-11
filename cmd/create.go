@@ -57,6 +57,7 @@ var createCmd = &cobra.Command{
 		if err != nil {
 			logger.Error("generate age keys: " + err.Error())
 		}
+
 		ageKeyMap := map[string]any{
 			"publicKey":  ageKeys.Recipient().String(),
 			"privateKey": FnSecret(ageKeys.String()),

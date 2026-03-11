@@ -3,6 +3,7 @@ package cmd
 import (
 	"bufio"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -11,6 +12,10 @@ import (
 	"strings"
 	"time"
 )
+
+type PulumiUser struct {
+	User string `json:"user"`
+}
 
 func missingToken(tokenVar string) {
 	var (
@@ -81,7 +86,7 @@ func GetPulumiUser() string {
 		logger.Error("skip update check: " + err.Error())
 	}
 
-	cmd := exec.CommandContext(ctx, "pulumi", "whoami", "--non-interactive")
+	cmd := exec.CommandContext(ctx, "pulumi", "whoami", "--non-interactive", "--json")
 
 	stdout, err := cmd.CombinedOutput()
 	if err != nil {
@@ -94,7 +99,13 @@ func GetPulumiUser() string {
 		}
 	}
 
-	return string(stdout)
+	var pulumiUser PulumiUser
+
+	if err := json.Unmarshal(stdout, &pulumiUser); err != nil {
+		logger.Error("json unmarshal data from `pulumi whoami` command: " + err.Error())
+	}
+
+	return pulumiUser.User
 }
 
 func SetupPrompt(promptStr string) string {
