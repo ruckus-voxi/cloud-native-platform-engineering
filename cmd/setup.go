@@ -3,7 +3,6 @@ package cmd
 import (
 	"bufio"
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -12,10 +11,6 @@ import (
 	"strings"
 	"time"
 )
-
-type PulumiUser struct {
-	User string `json:"user"`
-}
 
 func missingToken(tokenVar string) {
 	var (
@@ -66,7 +61,7 @@ func PreChk() {
 }
 
 func GetPulumiUser() string {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
 
 	helpTxt := func() {
@@ -86,7 +81,15 @@ func GetPulumiUser() string {
 		logger.Error("skip update check: " + err.Error())
 	}
 
-	cmd := exec.CommandContext(ctx, "pulumi", "whoami", "--non-interactive", "--json")
+	cmdArgs := []string{"whoami", "--non-interactive"}
+
+	// initial cmd run to remove "Logging in using access token from PULUMI_ACCESS_TOKEN" from output
+	if _, err := exec.CommandContext(ctx, "pulumi", cmdArgs...).Output(); err != nil {
+		logger.Error("pulumi login: initial login " + err.Error())
+	}
+
+	// run again with context and grab only pulumi user from output
+	cmd := exec.CommandContext(ctx, "pulumi", cmdArgs...)
 
 	stdout, err := cmd.CombinedOutput()
 	if err != nil {
@@ -99,13 +102,7 @@ func GetPulumiUser() string {
 		}
 	}
 
-	var pulumiUser PulumiUser
-
-	if err := json.Unmarshal(stdout, &pulumiUser); err != nil {
-		logger.Error("json unmarshal data from `pulumi whoami` command: " + err.Error())
-	}
-
-	return pulumiUser.User
+	return string(stdout)
 }
 
 func SetupPrompt(promptStr string) string {

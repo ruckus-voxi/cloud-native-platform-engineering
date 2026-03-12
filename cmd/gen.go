@@ -59,6 +59,7 @@ func (pr *Project) Init(ctx context.Context) {
 		logger.Error("change to project root directory: " + err.Error())
 	}
 
+	// go mod init command
 	mod := platform.Repo
 	cmd := exec.CommandContext(ctx, "go", "mod", "init", mod)
 
@@ -71,6 +72,11 @@ func (pr *Project) Init(ctx context.Context) {
 
 	if string(stdout) != "" {
 		logger.Info("go mod init")
+	}
+
+	// go mod tidy command
+	if err := os.Setenv("GO111MODULE", "on"); err != nil {
+		logger.Error("set GO111MODULE env: " + err.Error())
 	}
 
 	if _, err := os.Stat("go.mod"); err == nil {
