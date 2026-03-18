@@ -63,8 +63,8 @@ obj:
       accessKeyId: {{ .accessKey }}
       secretAccessKey: {{ .secretKey }}
       buckets:
-        {{- range .buckets }}
-        {{ . }}: {{ $.prefix }}-{{ . }}
+        {{- range $key, $value := .buckets }}
+        {{ $key }}: {{ $value }}
         {{- end }}
 platformBackups:
   database:
