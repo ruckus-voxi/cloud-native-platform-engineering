@@ -161,8 +161,6 @@ apps:
             external-dns.alpha.kubernetes.io/ttl: '30'
             service.beta.kubernetes.io/linode-loadbalancer-tags: '{{ .nodebalancerTag }}'
             service.beta.kubernetes.io/linode-loadbalancer-nodebalancer-id: '{{ .nodebalancerId }}'
-  jaeger:
-    enabled: true
   harbor:
     enabled: true
   knative:

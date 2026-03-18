@@ -102,6 +102,8 @@ Then to make this lab a little easier, use the kubeconfig file from one of your 
 
 ```bash
 export KUBECONFIG=$HOME/.kube/my-platform-kubeconfig.yaml
+
+export CLIENT_SECRET=$(kubectl get -n apl-keycloak-operator secrets apl-keycloak-operator-secret -ojson | jq -r '.data.KEYCLOAK_CL IENT_SECRET' | base64 -d)
 export USER_NAME=$(kubectl get secret keycloak-initial-admin -n keycloak -o json | jq -r '.data.username' | base64 -d)
 export USER_PASSWORD=$(kubectl get secret keycloak-initial-admin -n keycloak -o json | jq -r '.data.password' | base64 -d)
 ```
