@@ -1,8 +1,8 @@
 # Generate App Platform API Client Library
 
-The App Platform is API driven. It adhears to the [OpenAPI 3.0 specification](https://swagger.io/specification/v3/) and exposes an endpoint for users to access the Swagger web UI for documentation and testing―you've probably seen [these](https://petstore.swagger.io/?_gl=1*87igsc*_gcl_au*MTQzMDc3NTkwNS4xNzcxMDMxMDQ1) before. This standardization enables the use of tooling which can consume the JSON schema and auto-generate boilerplate code for us. In the Golang arena, One such tool is the remarkable [oapi-codegen](https://github.com/oapi-codegen/oapi-codegen). We can use it to generate HTTP models, server-side code, as well as clients. The latter is what we'll focus on for this exercise.
+The App Platform is API driven. It adheres to the [OpenAPI 3.0 specification](https://swagger.io/specification/v3/) and exposes an endpoint for users to access the Swagger web UI for documentation and testing―you've probably seen [these](https://petstore.swagger.io/?_gl=1*87igsc*_gcl_au*MTQzMDc3NTkwNS4xNzcxMDMxMDQ1) before. This standardization enables the use of tooling which can consume the JSON schema and auto-generate boilerplate code for us. In the Golang arena, One such tool is the remarkable [oapi-codegen](https://github.com/oapi-codegen/oapi-codegen). We can use it to generate HTTP models, server-side code, as well as clients. The latter is what we'll focus on for this exercise.
 
-Let's get started by adding this tool to our arsenal. For systems running Go 1.24+, the offical project recommends installing it `go get -tool`, but the `go install` works as well. We won't dig into the reasons for picking one or the other, but if you're interested, a co-maintainer of the `oapi-codegen` project outlines it pretty well this [post](https://www.jvt.me/posts/2025/01/27/go-tools-124/).  
+Let's get started by adding this tool to our arsenal. For systems running Go 1.24+, the official project recommends installing it `go get -tool`, but the `go install` works as well. We won't dig into the reasons for picking one or the other, but if you're interested, a co-maintainer of the `oapi-codegen` project outlines it pretty well this [post](https://www.jvt.me/posts/2025/01/27/go-tools-124/).  
 
 ```bash
 go get -tool github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@latest
@@ -11,7 +11,10 @@ go get -tool github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@latest
 go install github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@latest
 ```
 
-Next, if you haven't already, login to your APL console dashboard at `https://console.${DOMAIN}`. Be sure to repalce `${DOMAIN}` with the actual domain/subdomain of your APL installation. Once logged in you can visit the Swagger UI at `https://console.${DOMAIN}/api/api-docs/swagger/`. Look around for bit and get familiar, you'll notice there are both `/v1` and `/v2` endpoints. The differences are not immediately clear, but for a short example, you'll find API definitions for _team-specific_ configuration from underneath of `/v1/teams/{teamid}` (images, workloads, etc) or _platform specific_ settings from `/v2` or `/v1`. With some rare exceptions (when the API is not finalized or there are new apps under testing), the entire values structure is represented in these API definitions.
+> [!IMPORTANT]
+> These lab instructions currently support APL `v4.12.1` (the default version deployed by APL CLI). Updates are still pending for `v4.14.1`, which does not expose the API JSON schema at `/api/api-docs/`.
+
+Next, if you haven't already, login to your APL console dashboard at `https://console.${DOMAIN}`. Be sure to replace `${DOMAIN}` with the actual domain/subdomain of your APL installation. Once logged in you can visit the Swagger UI at `https://console.${DOMAIN}/api/api-docs/swagger/`. Look around for bit and get familiar, you'll notice there are both `/v1` and `/v2` endpoints. The differences are not immediately clear, but for a short example, you'll find API definitions for _team-specific_ configuration from underneath of `/v1/teams/{teamid}` (images, workloads, etc) or _platform specific_ settings from `/v2` or `/v1`. With some rare exceptions (when the API is not finalized or there are new apps under testing), the entire values structure is represented in these API definitions.
 
 Remove `/swagger/` from the URL path and reload the page, so that you are visiting `https://console.${DOMAIN}/api/api-docs/`. You should see the massive blob of JSON representing every possible API endpoint. Highlight all of it and copy/paste to a file called `api.yaml`.
 
@@ -53,7 +56,7 @@ For reference, the `aplcli` directory tree looks like this after a fresh `git cl
     └── screencasts
 ```
 
-Create a new `client` subdirectory under `cmd` and then move or copy the newley generated `client.go` file to it. Assuming you currently in the repo root, and you ran the previous `oapi-codgen` command from one directory outside of it, the two commands you need to run are:
+Create a new `client` subdirectory under `cmd` and then move or copy the newly generated `client.go` file to it. Assuming you currently in the repo root, and you ran the previous `oapi-codgen` command from one directory outside of it, the two commands you need to run are:
 
 ```bash
 mkdir cmd/client
@@ -103,6 +106,7 @@ Then to make this lab a little easier, use the kubeconfig file from one of your 
 ```bash
 export KUBECONFIG=$HOME/.kube/my-platform-kubeconfig.yaml
 
+# keycloak credentials for obtaining api tokens
 export CLIENT_SECRET=$(kubectl get -n apl-keycloak-operator secrets apl-keycloak-operator-secret -ojson | jq -r '.data.KEYCLOAK_CL IENT_SECRET' | base64 -d)
 export USER_NAME=$(kubectl get secret keycloak-initial-admin -n keycloak -o json | jq -r '.data.username' | base64 -d)
 export USER_PASSWORD=$(kubectl get secret keycloak-initial-admin -n keycloak -o json | jq -r '.data.password' | base64 -d)
@@ -117,16 +121,16 @@ Begin writing the `team` command logic in this `team.go` source file. Also open 
 - List existing teams
 
 > [!TIP]
-> Use the same format of a `--name/-n` flag that ohter commands use, in order to specify the APL instance to act on. For that matter, you'll likely save a ton of time by reviewing how those other commands work.
+> Use the same format of a `--name/-n` flag that other commands use, in order to specify the APL instance to act on. For that matter, you'll likely save a ton of time by reviewing how those other commands work.
 
 You can also look at the [example solution](./solutions/03-add-cli-command.md)if you're feeling stuck somewhere, but try your best to finish the lab without taking a peek. Also consider that the example solution is not perfect, nor is it the only way to factor your code for achieving this task. Good luck!
 
 > [!TIP]
 > By default the API token generated via the `keycloak` client secret has a short expiry. Your code needs to account for this. To get an idea for the process involved in getting an access token, run these commands separately in your terminal.
 > ```bash
-> export TOKEN=$(curl -s -X POST "https://keycloak.ams.arch-linux.io/realms/otomi/protocol/openid-connect/token" -H "Content-Type: application/x-www-form-urlencoded" -d "client_id=otomi" -d "client_secret=${CLIENT_SECRET}" -d "grant_type=password" -d "username=${USER_NAME}" -d "password=${USER_PASSWORD}" | jq -r .access_token)
+> export TOKEN=$(curl -s -X POST "https://keycloak.${DOMAIN}/realms/otomi/protocol/openid-connect/token" -H "Content-Type: application/x-www-form-urlencoded" -d "client_id=otomi" -d "client_secret=${CLIENT_SECRET}" -d "grant_type=password" -d "username=${USER_NAME}" -d "password=${USER_PASSWORD}" | jq -r .access_token)
 > ```
 
 ### Bonus
 
-If you nailed the challenge of adding the `team` command, and thirsty for more, keep going! Add another command called something like `user` that just like the `team` command, imports generated code from `client.go`. Also ensure it can target a specific APL istance, and adds, removes, and lists users on it.
+If you nailed the challenge of adding the `team` command, and thirsty for more, keep going! Add another command called something like `user` that just like the `team` command, imports generated code from `client.go`. Also ensure it can target a specific APL instance, and adds, removes, and lists users on it.
