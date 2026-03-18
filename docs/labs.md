@@ -6,5 +6,4 @@ APL CLI is cool and all, but what's even cooler, is your ability to customize an
 
 1. [Build your template library](01-build-tempates.md)
 2. [Automatically obtain default login creds](02-initial-login-creds.md)
-3. [Create an API client library](03-api-client-library.md)
-4. [Add new commands](04-add-cobra-commands.md)
+3. [Add new CLI command](03-add-cli-command.md)
