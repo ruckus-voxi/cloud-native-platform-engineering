@@ -20,7 +20,7 @@ const (
 	confDir   = ".aplcli"
 	idpDir    = ".aplcli/platforms"
 	valuesDir = ".aplcli/platforms/values"
-	version   = "0.1.4"
+	version   = "0.2.0"
 )
 
 type ProjectPaths struct {

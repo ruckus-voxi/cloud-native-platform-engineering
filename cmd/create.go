@@ -107,7 +107,7 @@ func init() {
 	createCmd.Flags().StringVarP(&platform.Region, "region", "r", "", "Akamai cloud region (required)")
 
 	// optional local flags
-	createCmd.Flags().StringVarP(&platform.AplVersion, "apl-version", "", "4.12.1", "App Platform version")
+	createCmd.Flags().StringVarP(&platform.AplVersion, "apl-version", "", "4.14.1", "App Platform version")
 	createCmd.Flags().StringVarP(&platform.KubeVersion, "kube-version", "", "1.33", "Kubernetes version")
 	createCmd.Flags().StringVarP(&platform.ObjPrefix, "obj-prefix", "", "apl", "S3 bucket label prefix")
 	createCmd.Flags().StringVarP(&platform.NbTag, "nb-tag", "", "apl-static-lb", "NodeBalancer tag")
