@@ -15,14 +15,14 @@ import (
 	"strconv"
 	"strings"
 
-	oapi "github.com/akamai-developers/aplcli/client"
+	oapi "github.com/akamai-developers/aplcli/internal/client"
 	"github.com/oapi-codegen/oapi-codegen/v2/pkg/securityprovider"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var (
 	apiURL    string
-	teamName  string
 	addTeam   bool
 	rmTeam    bool
 	listTeams bool
@@ -36,14 +36,14 @@ var teamCmd = &cobra.Command{
 	PreRun: func(cmd *cobra.Command, args []string) {
 		apiURL = "https://api." + platform.Domain
 
-		// make --add and --remove mutually exlusive
+		// make --add and --remove mutually exclusive
 		errMsg := "parse flag values: "
 		if addTeam && rmTeam {
 			cmd.Help()
 			logger.Error(errMsg + "--add and --remove are mutually exclusive")
 		}
 
-		// require --team-id togehter with other flags except for --list
+		// require --team-id together with other flags except for --list
 		if !listTeams && teamId == "" {
 			cmd.Help()
 			logger.Error(errMsg + "--team-id [string] is required")
@@ -88,12 +88,14 @@ var teamCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(teamCmd)
 
-	teamCmd.Flags().StringVarP(&teamName, "name", "n", "", "APL instance name (required)")
+	teamCmd.Flags().StringVarP(&platform.Name, "name", "n", "", "APL instance name (required)")
 	teamCmd.MarkFlagRequired("name") // makes the --name flag required
 	teamCmd.Flags().BoolVarP(&addTeam, "add", "a", false, "Create a new team")
 	teamCmd.Flags().BoolVarP(&rmTeam, "remove", "r", false, "Remove an existing team")
 	teamCmd.Flags().StringVarP(&teamId, "team-id", "", "", "Team name (required with --add/--remove)")
 	teamCmd.Flags().BoolVarP(&listTeams, "list", "l", false, "List all teams in APL instance")
+
+	_ = viper.BindPFlags(teamCmd.LocalFlags())
 }
 
 // aplClient is a wrapper func around the oapi-codegen generated
