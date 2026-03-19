@@ -20,7 +20,7 @@ const (
 	confDir   = ".aplcli"
 	idpDir    = ".aplcli/platforms"
 	valuesDir = ".aplcli/platforms/values"
-	version   = "0.1.4"
+	version   = "0.2.0"
 )
 
 type ProjectPaths struct {
@@ -212,7 +212,7 @@ func projPath() ProjectPaths {
 
 // loadProjConfig parses the array of platform definitions in config.yaml to
 // load the definition matching the value provided by the required --name flag.
-// This ensures loadig of the correct definition on each invokation.
+// This ensures loading of the correct definition on each invocation.
 func loadProjConfig() error {
 	cfg, ok := viper.AllSettings()["platform"].([]any)
 	if len(cfg) == 0 {

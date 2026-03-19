@@ -12,7 +12,6 @@ version: "2"
 #     - golines
 # issues:
 #   exclude-files:
-
 run:
   timeout: 5m
   concurrency: 4
@@ -136,6 +135,9 @@ linters:
      - wsl
   #   - zerologlint
   exclusions:
+    generated: strict
+    paths:
+      - internal/client/client.go
     presets:
       - common-false-positives
       - legacy

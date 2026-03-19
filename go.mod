@@ -49,6 +49,7 @@ require (
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/anchore/go-lzo v0.1.0 // indirect
 	github.com/andybalholm/cascadia v1.3.3 // indirect
+	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/apparentlymart/go-textseg/v15 v15.0.0 // indirect
 	github.com/appscode/go-querystring v0.0.0-20170504095604-0126cfb3f1dc // indirect
@@ -192,6 +193,7 @@ require (
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/ncw/swift/v2 v2.0.5 // indirect
 	github.com/nxadm/tail v1.4.11 // indirect
+	github.com/oapi-codegen/runtime v1.3.0 // indirect
 	github.com/oklog/ulid v1.3.1 // indirect
 	github.com/opentracing/basictracer-go v1.1.0 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
@@ -234,7 +236,6 @@ require (
 	github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966 // indirect
 	github.com/smarty/assertions v1.16.0 // indirect
 	github.com/sony/gobreaker v1.0.0 // indirect
-	github.com/sourcegraph/conc v0.3.1-0.20240121214520-5f936abd7ae8 // indirect
 	github.com/spacemonkeygo/monkit/v3 v3.0.25-0.20251022131615-eb24eb109368 // indirect
 	github.com/spf13/afero v1.15.0 // indirect
 	github.com/spf13/cast v1.10.0 // indirect
